@@ -1,0 +1,6 @@
+{
+    "axios": {
+        "type": "main_point_to_incorrect_env",
+        "correct": "dist/axios.min.js"
+    }
+}
