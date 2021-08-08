@@ -1,6 +1,22 @@
 {
-    "axios": {
-        "type": "main_point_to_incorrect_env",
-        "correct": "dist/axios.min.js"
+    "packages": {
+        "axios": {
+            "usage": {
+                "type": "main_point_to_incorrect_env",
+                "correct": "dist/axios.min.js"
+            }
+        },
+        "lodash": {
+            "usage": {
+                "type": "commonjs",
+                "path": "array.js"
+            }
+        },
+        "lodash-es": {
+            "usage": {
+                "type": "module",
+                "path": "zip.js"
+            }
+        }
     }
 }
