@@ -4,13 +4,33 @@ export interface CanIUseNpmDatabase {
 }
 
 export interface Package {
-    usage: PackageUsage;
+    usage: PackageUsage | PackageUsage[];
 }
 
-type PackageUsage = PackageUsageMainPointToIncorrectEnv;
+type PackageUsage = CommonJsUsage | EsmUsage;
 
-interface PackageUsageMainPointToIncorrectEnv {
-    type: 'main_point_to_incorrect_env';
-    correct: string;
+interface UsageBase {
+    path: string;
+}
+
+interface CommonJsUsage extends UsageBase {
+    module: "commonjs",
+    as: string,
+}
+
+interface EsmUsage extends UsageBase {
+    module: "module",
+    export: {
+        "type": "default",
+        "as": string,
+    } | {
+        "type": "named",
+        "exports": string | string[] | NamedExport | NamedExport[],
+    }
+}
+
+interface NamedExport {
+    local: string,
+    as: string,
 }
 
