@@ -3,7 +3,7 @@ export interface CanIUseNpmDatabase {
     packages: Record<string, Package>
 }
 
-interface Package {
+export interface Package {
     usage: PackageUsage;
 }
 

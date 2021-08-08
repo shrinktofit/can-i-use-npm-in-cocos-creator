@@ -2,7 +2,7 @@
   "name": "can-i-use-npm",
   "version": "0.1.0",
   "private": true,
-  "homepage": "can-i-use-npm-in-cocos-creator",
+  "homepage": ".",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -14,16 +14,19 @@
     "react": "^17.0.2",
     "react-async": "^10.0.1",
     "react-dom": "^17.0.2",
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "env-cmd -f .env.dev react-scripts start",
+    "build": "env-cmd -f .env.dev react-scripts build",
+    "build:deploy": "env-cmd -f .env.deploy react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build:deploy",
     "deploy": "gh-pages -d build -b dist"
   },
   "eslintConfig": {
@@ -45,6 +48,9 @@
     ]
   },
   "devDependencies": {
+    "@types/react-helmet": "^6.1.2",
+    "@types/react-router-dom": "^5.1.8",
+    "env-cmd": "^10.1.0",
     "gh-pages": "^3.2.3"
   }
 }
