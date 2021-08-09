@@ -1,8 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { CanIUseNpmDatabase, Package } from './Database';
-import Async from 'react-async';
+import { CanIUseNpmDatabase, CommonJsUsage, EsmUsage, PackageInfo } from './Database';
 import { Helmet } from 'react-helmet';
 import {
     BrowserRouter as Router,
@@ -13,50 +11,60 @@ import {
     useRouteMatch
 } from "react-router-dom";
 
-let database: CanIUseNpmDatabase | null = null;
+class App extends React.Component<{}, {
+    database: CanIUseNpmDatabase;
+}> {
+    constructor(props: {}) {
+        super(props);
+        this.state = {
+            database: null!,
+        };
+    }
 
-class App extends React.Component {
+    componentDidMount() {
+        (async () => {
+            const database = await fetchDatabase();
+            this.setState({ database, });
+        })();
+    }
+
     render() {
-        return <div className="App">
+        const { database } = this.state;
+        return database && <div className="App">
             <Helmet>
                 <title>Can I use ... npm module..</title>
             </Helmet>
 
-            <Async promiseFn={fetchDatabase}>
-                {({ data, isLoading }) => {
-                    if (!data) {
-                        return;
-                    }
-                    console.log(data);
-                    database = data;
-                    return (<Router>
-                        <div>
-                            <Switch>
-                                <Route path="/">
-                                    <Packages></Packages>
-                                </Route>
-                            </Switch>
-                        </div>
-                    </Router>);
-                }}
-            </Async>
+            <Router>
+                <div>
+                    <Switch>
+                        <Route path="/" component={() => Packages(database)}>
+                        </Route>
+                    </Switch>
+                </div>
+            </Router>
         </div>;
     }
 }
 
-function Packages() {
+function Packages(database: CanIUseNpmDatabase) {
     let match = useRouteMatch();
+    if (!database) {
+        return <div></div>;
+    }
     return <Router>
         <div>
+            <div>
+                我们收录的包……
+            </div>
             <Switch>
-                <Route path={`${match.path}/packages/:packageId`}>
-                    <PackageInfo />
+                <Route path={`${match.path}packages/:packageId`} component={() => ShowPackageInfo(database)}>
                 </Route>
                 <Route path={match.path}>
                     <nav>
                         <ul>{
-                            Object.keys(database!.packages).map((packageName) => <li>
-                                <Link to={`/packages/${packageName}`}>
+                            Object.keys(database!.packages).map((packageName) => <li key={packageName}>
+                                <Link to={`${match.path}packages/${packageName}`}>
                                     {packageName}
                                 </Link>
                             </li>)
@@ -68,17 +76,67 @@ function Packages() {
     </Router>
 }
 
-function PackageInfo() {
+function ShowPackageInfo(database: CanIUseNpmDatabase) {
     const { packageId } = useParams<{ packageId: string }>();
-    return <div>
-        {packageId}
-    </div>
+    const packageInfo = database.packages[packageId];
+    if (!packageInfo) {
+        return <div>我们暂未收录此包的用法。</div>
+    }
+    const usages = Array.isArray(packageInfo.usage) ? packageInfo.usage : [packageInfo.usage];
+    return (<div>
+        <a href={`https://www.npmjs.com/package/${packageId}`}>{`npmjs.com/package/${packageId}`}</a>
+        <ul>
+            <li> 可用：{usages.length > 0 ? '✔️' : '❌'}</li>
+            {
+                usages.map((usage) => <li> {
+                    usage.module === 'module'
+                        ? ShowEsmPackageUsage(packageId, packageInfo, usage)
+                        : ShowCommonJsPackageUsage(packageId, packageInfo, usage)
+                } </li>)
+            }
+        </ul>
+    </div>)
+}
+
+function getModuleId (packageId: string, subpath: string) {
+    return subpath === '.' ? packageId : `${packageId}/${subpath}`;
+}
+
+function ShowEsmPackageUsage(packageId: string, packageInfo: PackageInfo, usage: EsmUsage) {
+    return (<div>
+        用法：ESM 模块
+        <div>
+        {<code>
+            {`import ${
+                usage.export.type === 'default'
+                    ? usage.export.as
+                    : (Array.isArray(usage.export.exports)
+                        ? usage.export.exports 
+                        : [usage.export.exports]).map((exportInfo) =>
+                            typeof exportInfo === 'string'
+                                ? exportInfo
+                                : `${exportInfo.exported} as ${exportInfo.local}`)
+                } from "${getModuleId(packageId, usage.path)}"`}
+        </code>}
+        </div>
+    </div>)
+}
+
+function ShowCommonJsPackageUsage(packageId: string, packageInfo: PackageInfo, usage: CommonJsUsage) {
+    return (<div>
+        用法：CommonJS 模块
+        <div>
+        {<code>
+            {`import ${usage.as} from "${getModuleId(packageId, usage.path)}"`}
+        </code>}
+        </div>
+    </div>)
 }
 
 export default App;
 
 async function fetchDatabase() {
-    const response = await fetch('database/index.json');
+    const response = await fetch('/database/index.json');
     const json = await response.json();
     return json as CanIUseNpmDatabase;
 }
