@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { CanIUseNpmDatabase, CommonJsUsage, EsmUsage, PackageInfo } from './Database';
+import { CanIUseNpmDatabase, CommonJsUsage, EsmUsage, PackageInfo, PackageUsage } from './Database';
 import { Helmet } from 'react-helmet';
 import {
     BrowserRouter as Router,
@@ -76,6 +76,11 @@ function Packages(database: CanIUseNpmDatabase) {
     </Router>
 }
 
+function comparePackageUsage (a: PackageUsage, b: PackageUsage) {
+    const weight = (usage: PackageUsage) => usage.module === 'module' ? 0 : 1;
+    return weight(a) - weight(b);
+}
+
 function ShowPackageInfo(database: CanIUseNpmDatabase) {
     const { packageId } = useParams<{ packageId: string }>();
     const packageInfo = database.packages[packageId];
@@ -83,6 +88,7 @@ function ShowPackageInfo(database: CanIUseNpmDatabase) {
         return <div>我们暂未收录此包的用法。</div>
     }
     const usages = Array.isArray(packageInfo.usage) ? packageInfo.usage : [packageInfo.usage];
+    usages.slice().sort(comparePackageUsage);
     return (<div>
         <a href={`https://www.npmjs.com/package/${packageId}`}>{`npmjs.com/package/${packageId}`}</a>
         <ul>

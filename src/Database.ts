@@ -22,7 +22,7 @@ export interface PackageInfo {
 /**
  * The usage of a module within a package.
  */
-type PackageUsage = CommonJsUsage | EsmUsage;
+export type PackageUsage = CommonJsUsage | EsmUsage;
 
 /**
  * Describes the usage of a module within a package.
