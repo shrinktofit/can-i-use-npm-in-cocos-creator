@@ -2,20 +2,50 @@
     "packages": {
         "axios": {
             "usage": {
-                "type": "main_point_to_incorrect_env",
-                "correct": "dist/axios.min.js"
+                "module": "commonjs",
+                "path": "dist/axios.min.js",
+                "as": "axios"
+            }
+        },
+        "fairygui-cc": {
+            "usage": {
+                "module": "module",
+                "path": ".",
+                "export": {
+                    "type": "namespace",
+                    "as": "fgui"
+                }
+            }
+        },
+        "jszip": {
+            "usage": {
+                "module": "commonjs",
+                "path": "dist/jszip.min.js",
+                "as": "jszip"
             }
         },
         "lodash": {
             "usage": {
-                "type": "commonjs",
-                "path": "array.js"
+                "module": "commonjs",
+                "path": "array.js",
+                "as": "array"
             }
         },
         "lodash-es": {
             "usage": {
-                "type": "module",
-                "path": "zip.js"
+                "module": "module",
+                "path": "zip.js",
+                "export": {
+                    "type": "default",
+                    "as": "zip"
+                }
+            }
+        },
+        "web3": {
+            "usage": {
+                "module": "commonjs",
+                "path": "dist/web3.min.js",
+                "as": "web3"
             }
         }
     }
