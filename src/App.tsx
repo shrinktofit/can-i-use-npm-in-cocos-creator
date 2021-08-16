@@ -145,7 +145,7 @@ function ShowCommonJsPackageUsage(packageId: string, packageInfo: PackageInfo, u
 export default App;
 
 async function fetchDatabase() {
-    const response = await fetch('/database/index.json');
+    const response = await fetch(`${process.env.PUBLIC_URL}/database/index.json`);
     const json = await response.json();
     return json as CanIUseNpmDatabase;
 }
