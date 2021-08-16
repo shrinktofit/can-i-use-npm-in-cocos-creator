@@ -67,7 +67,10 @@ export interface EsmUsage extends UsageBase {
          * The showing name export(s) or(and) default exports.
          */
         "exports": string | string[] | NamedExport | NamedExport[],
-    }
+    } | {
+        "type": "namespace",
+        "as": string,
+    };
 }
 
 interface NamedExport {

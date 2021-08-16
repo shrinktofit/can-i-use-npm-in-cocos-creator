@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import './List.css';
 import { CanIUseNpmDatabase, CommonJsUsage, EsmUsage, PackageInfo, PackageUsage } from './Database';
 import { Helmet } from 'react-helmet';
 import {
@@ -55,7 +56,7 @@ function Packages(database: CanIUseNpmDatabase) {
     return <Router>
         <div>
             <div>
-                我们收录的包……
+                我们收录的：
             </div>
             <Switch>
                 <Route path={`${match.path}packages/:packageId`} component={() => ShowPackageInfo(database)}>
@@ -116,12 +117,14 @@ function ShowEsmPackageUsage(packageId: string, packageInfo: PackageInfo, usage:
             {`import ${
                 usage.export.type === 'default'
                     ? usage.export.as
-                    : (Array.isArray(usage.export.exports)
-                        ? usage.export.exports 
-                        : [usage.export.exports]).map((exportInfo) =>
-                            typeof exportInfo === 'string'
-                                ? exportInfo
-                                : `${exportInfo.exported} as ${exportInfo.local}`)
+                    : usage.export.type === 'namespace'
+                        ? `* as ${usage.export.as}`
+                        : (Array.isArray(usage.export.exports)
+                            ? usage.export.exports 
+                            : [usage.export.exports]).map((exportInfo) =>
+                                typeof exportInfo === 'string'
+                                    ? exportInfo
+                                    : `${exportInfo.exported} as ${exportInfo.local}`)
                 } from "${getModuleId(packageId, usage.path)}"`}
         </code>}
         </div>
