@@ -55,9 +55,7 @@ function Packages(database: CanIUseNpmDatabase) {
     }
     return <Router>
         <div>
-            <div>
-                我们收录的：
-            </div>
+            <h1> 我能否在 Cocos Creator 中使用 npm 包…… </h1>
             <Switch>
                 <Route path={`${match.path}packages/:packageId`} component={() => ShowPackageInfo(database)}>
                 </Route>
