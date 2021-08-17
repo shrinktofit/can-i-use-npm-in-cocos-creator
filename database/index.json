@@ -7,6 +7,13 @@
                 "as": "axios"
             }
         },
+        "crypto-ts": {
+            "usage": {
+                "module": "commonjs",
+                "path": ".",
+                "as": "crypto"
+            }
+        },
         "fairygui-cc": {
             "usage": {
                 "module": "module",
