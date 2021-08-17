@@ -113,9 +113,9 @@ function printImportSpecifier(importSpecifier: ImportSpecifier) {
         case 'namespace': return `* as ${importSpecifier.local}`
         case 'named': {
             const bindings = Array.isArray(importSpecifier.exports) ? importSpecifier.exports : [importSpecifier.exports];
-            return `{${bindings.map((binding) => typeof binding === 'string'
+            return `{ ${bindings.map((binding) => typeof binding === 'string'
                 ? binding :
-                `${binding.exported} as ${binding.local}`).join(', ')}}`;
+                `${binding.exported} as ${binding.local}`).join(', ')} }`;
         }
     }
 }
