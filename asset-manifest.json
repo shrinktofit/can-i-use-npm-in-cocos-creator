@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/can-i-use-npm-in-cocos-creator/static/css/main.ba4eddf4.chunk.css",
-    "main.js": "/can-i-use-npm-in-cocos-creator/static/js/main.30c835e4.chunk.js",
-    "main.js.map": "/can-i-use-npm-in-cocos-creator/static/js/main.30c835e4.chunk.js.map",
+    "main.js": "/can-i-use-npm-in-cocos-creator/static/js/main.84c5ca71.chunk.js",
+    "main.js.map": "/can-i-use-npm-in-cocos-creator/static/js/main.84c5ca71.chunk.js.map",
     "runtime-main.js": "/can-i-use-npm-in-cocos-creator/static/js/runtime-main.428633a2.js",
     "runtime-main.js.map": "/can-i-use-npm-in-cocos-creator/static/js/runtime-main.428633a2.js.map",
     "static/js/2.6d335211.chunk.js": "/can-i-use-npm-in-cocos-creator/static/js/2.6d335211.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.428633a2.js",
     "static/js/2.6d335211.chunk.js",
     "static/css/main.ba4eddf4.chunk.css",
-    "static/js/main.30c835e4.chunk.js"
+    "static/js/main.84c5ca71.chunk.js"
   ]
 }
