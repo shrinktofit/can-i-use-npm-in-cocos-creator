@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import './List.css';
-import { CanIUseNpmDatabase, CommonJsUsage, EsmUsage, PackageInfo, PackageUsage } from './Database';
+import { CanIUseNpmDatabase, CommonJsUsage, EsmUsage, ImportSpecifier, PackageInfo, PackageUsage } from './Database';
 import { Helmet } from 'react-helmet';
 import {
     BrowserRouter as Router,
@@ -107,24 +107,28 @@ function getModuleId (packageId: string, subpath: string) {
     return subpath === '.' ? packageId : `${packageId}/${subpath}`;
 }
 
+function printImportSpecifier(importSpecifier: ImportSpecifier) {
+    switch (importSpecifier.type) {
+        case 'default': return `${importSpecifier.local}`;
+        case 'namespace': return `* as ${importSpecifier.local}`
+        case 'named': {
+            const bindings = Array.isArray(importSpecifier.exports) ? importSpecifier.exports : [importSpecifier.exports];
+            return `{${bindings.map((binding) => typeof binding === 'string'
+                ? binding :
+                `${binding.exported} as ${binding.local}`).join(', ')}}`;
+        }
+    }
+}
+
 function ShowEsmPackageUsage(packageId: string, packageInfo: PackageInfo, usage: EsmUsage) {
     return (<div>
         用法：ESM 模块
         <div>
-        {<code>
-            {`import ${
-                usage.export.type === 'default'
-                    ? usage.export.as
-                    : usage.export.type === 'namespace'
-                        ? `* as ${usage.export.as}`
-                        : (Array.isArray(usage.export.exports)
-                            ? usage.export.exports 
-                            : [usage.export.exports]).map((exportInfo) =>
-                                typeof exportInfo === 'string'
-                                    ? exportInfo
-                                    : `${exportInfo.exported} as ${exportInfo.local}`)
-                } from "${getModuleId(packageId, usage.path)}"`}
-        </code>}
+        {<pre>
+            {(Array.isArray(usage.export) ? usage.export : [usage.export]).map((exportInfo) => {
+                return `import ${printImportSpecifier(exportInfo)} from "${getModuleId(packageId, usage.path)}";`;
+            }).join(`\n或\n`)}
+        </pre>}
         </div>
     </div>)
 }
@@ -133,9 +137,9 @@ function ShowCommonJsPackageUsage(packageId: string, packageInfo: PackageInfo, u
     return (<div>
         用法：CommonJS 模块
         <div>
-        {<code>
-            {`import ${usage.as} from "${getModuleId(packageId, usage.path)}"`}
-        </code>}
+        {<pre>
+            {`import ${usage.local} from "${getModuleId(packageId, usage.path)}";`}
+        </pre>}
         </div>
     </div>)
 }

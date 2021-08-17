@@ -43,7 +43,7 @@ export interface CommonJsUsage extends UsageBase {
     /**
      * The showing CommonJS default import of this module.
      */
-    as: string,
+    local: string,
 }
 
 /**
@@ -55,22 +55,34 @@ export interface EsmUsage extends UsageBase {
     /**
      * The showing ESM exports of this module.
      */
-    export: {
-        "type": "default",
-        /**
-         * The showing default export.
-         */
-        "as": string,
-    } | {
-        "type": "named",
-        /**
-         * The showing name export(s) or(and) default exports.
-         */
-        "exports": string | string[] | NamedExport | NamedExport[],
-    } | {
-        "type": "namespace",
-        "as": string,
-    };
+    export: ImportSpecifier | Array<ImportSpecifier>;
+}
+
+export type ImportSpecifier = ImportNamedSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier;
+
+interface ImportNamedSpecifier {
+    "type": "named",
+    
+    /**
+     * The showing name export(s) or(and) default exports.
+     */
+    "exports": string | string[] | NamedExport | NamedExport[],
+}
+
+interface ImportDefaultSpecifier {
+    "type": "default",
+    /**
+     * The showing default export.
+     */
+    "local": string,
+}
+
+interface ImportNamespaceSpecifier {
+    "type": "namespace",
+    /**
+     * The showing default export.
+     */
+    "local": string,
 }
 
 interface NamedExport {

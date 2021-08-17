@@ -4,7 +4,14 @@
             "usage": {
                 "module": "commonjs",
                 "path": "dist/axios.min.js",
-                "as": "axios"
+                "local": "axios"
+            }
+        },
+        "crypto-ts": {
+            "usage": {
+                "module": "commonjs",
+                "path": ".",
+                "local": "crypto"
             }
         },
         "fairygui-cc": {
@@ -13,7 +20,7 @@
                 "path": ".",
                 "export": {
                     "type": "namespace",
-                    "as": "fgui"
+                    "local": "fgui"
                 }
             }
         },
@@ -21,14 +28,14 @@
             "usage": {
                 "module": "commonjs",
                 "path": "dist/jszip.min.js",
-                "as": "jszip"
+                "local": "jszip"
             }
         },
         "lodash": {
             "usage": {
                 "module": "commonjs",
                 "path": "array.js",
-                "as": "array"
+                "local": "array"
             }
         },
         "lodash-es": {
@@ -37,15 +44,32 @@
                 "path": "zip.js",
                 "export": {
                     "type": "default",
-                    "as": "zip"
+                    "local": "zip"
                 }
+            }
+        },
+        "pako": {
+            "usage": {
+                "module": "module",
+                "path": ".",
+                "export": [
+                    { "type": "default", "local": "pako" },
+                    { "type": "named", "exports": ["Deflate", "Inflate"] }
+                ]
             }
         },
         "web3": {
             "usage": {
                 "module": "commonjs",
                 "path": "dist/web3.min.js",
-                "as": "web3"
+                "local": "web3"
+            }
+        },
+        "whatwg-fetch": {
+            "usage": {
+                "module": "commonjs",
+                "path": ".",
+                "local": "fetch"
             }
         }
     }
