@@ -48,6 +48,19 @@
                 }
             }
         },
+        "mobx": {
+            "usage": [{
+                "module": "module",
+                "path": "dist/mobx.esm.js",
+                "export": [
+                    { "type": "named", "exports": ["ObservableMap", "observable"] }
+                ]
+            }, {
+                "module": "commonjs",
+                "path": "dist/mobx.cjs.development.js",
+                "local": "mobx"
+            }]
+        },
         "pako": {
             "usage": {
                 "module": "module",
