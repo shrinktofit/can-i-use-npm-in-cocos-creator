@@ -71,6 +71,13 @@
                 ]
             }
         },
+        "rxjs": {
+            "usage": {
+                "module": "commonjs",
+                "path": "dist/bundles/rxjs.umd.js",
+                "local": "rxjs"
+            }
+        },
         "web3": {
             "usage": {
                 "module": "commonjs",
