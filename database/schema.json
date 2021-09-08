@@ -1,0 +1,235 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "CommonJsUsage": {
+            "description": "Describes the usage of a CommonJS module within a package.",
+            "properties": {
+                "local": {
+                    "description": "The showing CommonJS default import of this module.",
+                    "type": "string"
+                },
+                "module": {
+                    "enum": [
+                        "commonjs"
+                    ],
+                    "type": "string"
+                },
+                "path": {
+                    "description": "The module's subpath into the package.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "local",
+                "module",
+                "path"
+            ],
+            "type": "object"
+        },
+        "EsmUsage": {
+            "description": "Describes the usage of a ESM module within a package.",
+            "properties": {
+                "export": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/ImportNamedSpecifier"
+                        },
+                        {
+                            "$ref": "#/definitions/ImportDefaultSpecifier"
+                        },
+                        {
+                            "$ref": "#/definitions/ImportNamespaceSpecifier"
+                        },
+                        {
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/definitions/ImportNamedSpecifier"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/ImportDefaultSpecifier"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/ImportNamespaceSpecifier"
+                                    }
+                                ]
+                            },
+                            "type": "array"
+                        }
+                    ],
+                    "description": "The showing ESM exports of this module."
+                },
+                "module": {
+                    "enum": [
+                        "module"
+                    ],
+                    "type": "string"
+                },
+                "path": {
+                    "description": "The module's subpath into the package.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "export",
+                "module",
+                "path"
+            ],
+            "type": "object"
+        },
+        "ImportDefaultSpecifier": {
+            "properties": {
+                "local": {
+                    "description": "The showing default export.",
+                    "type": "string"
+                },
+                "type": {
+                    "enum": [
+                        "default"
+                    ],
+                    "type": "string"
+                }
+            },
+            "required": [
+                "local",
+                "type"
+            ],
+            "type": "object"
+        },
+        "ImportNamedSpecifier": {
+            "properties": {
+                "exports": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "$ref": "#/definitions/NamedExport"
+                        },
+                        {
+                            "items": {
+                                "$ref": "#/definitions/NamedExport"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "The showing name export(s) or(and) default exports."
+                },
+                "type": {
+                    "enum": [
+                        "named"
+                    ],
+                    "type": "string"
+                }
+            },
+            "required": [
+                "exports",
+                "type"
+            ],
+            "type": "object"
+        },
+        "ImportNamespaceSpecifier": {
+            "properties": {
+                "local": {
+                    "description": "The showing default export.",
+                    "type": "string"
+                },
+                "type": {
+                    "enum": [
+                        "namespace"
+                    ],
+                    "type": "string"
+                }
+            },
+            "required": [
+                "local",
+                "type"
+            ],
+            "type": "object"
+        },
+        "NamedExport": {
+            "properties": {
+                "exported": {
+                    "description": "The exported name of this named export binding.",
+                    "type": "string"
+                },
+                "local": {
+                    "description": "Local binding name of this named export binding.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "exported",
+                "local"
+            ],
+            "type": "object"
+        },
+        "PackageInfo": {
+            "description": "Package info.",
+            "properties": {
+                "types": {
+                    "description": "The types info of this package.",
+                    "properties": {
+                        "definitelyTyped": {
+                            "type": "boolean"
+                        },
+                        "subPathTypes": {
+                            "type": "boolean"
+                        }
+                    },
+                    "type": "object"
+                },
+                "usage": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/CommonJsUsage"
+                        },
+                        {
+                            "$ref": "#/definitions/EsmUsage"
+                        },
+                        {
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/definitions/CommonJsUsage"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/EsmUsage"
+                                    }
+                                ],
+                                "description": "The usage of a module within a package."
+                            },
+                            "type": "array"
+                        }
+                    ],
+                    "description": "The usage(s) of modules within this package."
+                }
+            },
+            "required": [
+                "usage"
+            ],
+            "type": "object"
+        }
+    },
+    "description": "The database.",
+    "properties": {
+        "packages": {
+            "additionalProperties": {
+                "$ref": "#/definitions/PackageInfo"
+            },
+            "description": "All npm package infos. Keys are package ID. Values are package info.",
+            "type": "object"
+        }
+    },
+    "required": [
+        "packages"
+    ],
+    "type": "object"
+}
+
