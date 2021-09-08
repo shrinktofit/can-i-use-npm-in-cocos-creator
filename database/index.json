@@ -2,6 +2,10 @@
     "$schema": "./schema.json",
     "packages": {
         "async": {
+            "types": {
+                "definitelyTyped": true,
+                "subPathTypes": false
+            },
             "usage": {
                 "module": "commonjs",
                 "path": "dist/async.mjs",
@@ -19,6 +23,10 @@
             }
         },
         "axios": {
+            "types": {
+                "definitelyTyped": false,
+                "subPathTypes": false
+            },
             "usage": {
                 "module": "commonjs",
                 "path": "dist/axios.min.js",
@@ -43,6 +51,10 @@
             }
         },
         "jszip": {
+            "types": {
+                "definitelyTyped": true,
+                "subPathTypes": false
+            },
             "usage": {
                 "module": "commonjs",
                 "path": "dist/jszip.min.js",
