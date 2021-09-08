@@ -92,6 +92,8 @@ function ShowPackageInfo(database: CanIUseNpmDatabase) {
         <a href={`https://www.npmjs.com/package/${packageId}`}>{`npmjs.com/package/${packageId}`}</a>
         <ul>
             <li> 可用：{usages.length > 0 ? '✔️' : '❌'}</li>
+            <li> 安装：npm install --save {packageId}</li>
+            <li> {ShowTypes(packageId, packageInfo)}</li>
             {
                 usages.map((usage) => <li> {
                     usage.module === 'module'
@@ -129,6 +131,7 @@ function ShowEsmPackageUsage(packageId: string, packageInfo: PackageInfo, usage:
                 return `import ${printImportSpecifier(exportInfo)} from "${getModuleId(packageId, usage.path)}";`;
             }).join(`\n或\n`)}
         </pre>}
+        {showTypesOverride(packageId, packageInfo, usage)}
         </div>
     </div>)
 }
@@ -140,8 +143,62 @@ function ShowCommonJsPackageUsage(packageId: string, packageInfo: PackageInfo, u
         {<pre>
             {`import ${usage.local} from "${getModuleId(packageId, usage.path)}";`}
         </pre>}
+        {showTypesOverride(packageId, packageInfo, usage)}
         </div>
     </div>)
+}
+
+function ShowTypes(packageId: string, packageInfo: PackageInfo) {
+    const { types } = packageInfo;
+    if (!types) {
+        return;
+    }
+    const { definitelyTyped } = types;
+    return (<div>
+        {(() => {
+            if (definitelyTyped) {
+                return <div>
+                    此包的类型定义存放在 <a href="https://github.com/DefinitelyTyped/DefinitelyTyped">DefinitelyTyped</a> 上。
+                    <br/>
+                    通过以下方式安装：
+                    <pre>
+                        npm install --save-dev @types/{packageId}
+                    </pre>
+                </div>;
+            } else {
+                return <div>
+                    此包本身提供了类型定义。
+                </div>;
+            }
+        })()}
+        
+    </div>);
+}
+
+function showTypesOverride(packageId: string, packageInfo: PackageInfo, usage: EsmUsage | CommonJsUsage) {
+    const { types } = packageInfo;
+    if (!types) {
+        return;
+    }
+    const { subPathTypes } = types;
+    return (<div>
+        {(() => {
+            if (usage.path === '.' || subPathTypes) {
+                return;
+            }
+            const moduleId = getModuleId(packageId, usage.path);
+            return (<div>
+                模块“{moduleId}”可能没有相应的类型声明。
+                <br/>
+                为了获取类型提示，将以下内容拷贝至任何 `.d.ts` 文件中，并在 tsconfig.json 中引用该 `.d.ts` 文件。
+                <pre>
+                declare module "{moduleId}" {`{
+                    export *${usage.module === 'module' ? '' : ' as default'} from '${packageId}';
+                }`}
+                </pre>
+            </div>)
+        })()}
+    </div>);
 }
 
 export default App;

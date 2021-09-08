@@ -6,7 +6,9 @@ export interface CanIUseNpmDatabase {
     /**
      * All npm package infos. Keys are package ID. Values are package info.
      */
-    packages: Record<string, PackageInfo>
+    packages: {
+        [x: string]: PackageInfo;
+    }
 }
 
 /**
@@ -17,6 +19,14 @@ export interface PackageInfo {
      * The usage(s) of modules within this package.
      */
     usage: PackageUsage | PackageUsage[];
+
+    /**
+     * The types info of this package.
+     */
+    types?: {
+        definitelyTyped?: boolean;
+        subPathTypes?: boolean;
+    };
 }
 
 /**
