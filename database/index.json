@@ -7,9 +7,12 @@
                 "subPathTypes": false
             },
             "usage": {
-                "module": "commonjs",
+                "module": "module",
                 "path": "dist/async.mjs",
-                "local": "async"
+                "export": {
+                    "type": "named",
+                    "exports": ["forEachOf"]
+                }
             }
         },
         "async-es": {
