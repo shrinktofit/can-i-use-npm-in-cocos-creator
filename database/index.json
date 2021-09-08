@@ -1,5 +1,22 @@
 {
     "packages": {
+        "async": {
+            "usage": {
+                "module": "commonjs",
+                "path": "dist/async.mjs",
+                "local": "async"
+            }
+        },
+        "async-es": {
+            "usage": {
+                "module": "module",
+                "path": ".",
+                "export": {
+                    "type": "named",
+                    "exports": ["forEachOf"]
+                }
+            }
+        },
         "axios": {
             "usage": {
                 "module": "commonjs",
