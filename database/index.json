@@ -1,6 +1,13 @@
 {
     "$schema": "./schema.json",
     "packages": {
+        "astar-typescript": {
+            "usage": {
+                "module": "commonjs",
+                "path": ".",
+                "local": "astar"
+            }
+        },
         "async": {
             "types": {
                 "definitelyTyped": true,
