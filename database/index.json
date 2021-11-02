@@ -98,6 +98,19 @@
                 "local": "mobx"
             }]
         },
+        "msgpackr": {
+            "types": {
+                "definitelyTyped": false,
+                "subPathTypes": true
+            },
+            "usage": {
+                "module": "module",
+                "path": ".",
+                "export": [
+                    { "type": "named", "exports": ["pack", "unpack"] }
+                ]
+            }
+        },
         "pako": {
             "types": {
                 "definitelyTyped": true,
@@ -135,6 +148,17 @@
                 "module": "commonjs",
                 "path": ".",
                 "local": "fetch"
+            }
+        },
+        "xstate": {
+            "types": {
+                "definitelyTyped": false,
+                "subPathTypes": false
+            },
+            "usage": {
+                "module": "commonjs",
+                "path": "dist/xstate.js",
+                "local": "xstate"
             }
         }
     }
